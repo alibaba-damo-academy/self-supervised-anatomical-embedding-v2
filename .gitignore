@@ -1,0 +1,11 @@
+work_dirs
+work_dirs/
+third_party
+third_party/
+tools/work_dirs/
+tools/work_dirs
+__pycache__/
+*/__pycache__
+*.egg-info
+*.pyc
+sam/datasets/piplines/__pycache__/*
