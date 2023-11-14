@@ -78,7 +78,7 @@ def fixed_point_iterations(emb1, norm_info_1, emb2, norm_info_2, im2_shape, pt1,
     final_k_all = []
     final_score_all = []
     for i in range(dis.shape[0]):
-        if dis[i] < 100 and pt_final_score[i] > 1.3:
+        if dis[i] < 100 and pt_final_score[i] > 1.3/3:
             final_q_all.append(pt_q_final[i, :])
             final_k_all.append(pt_k_final[i, :])
             final_score_all.append(pt_final_score[i])

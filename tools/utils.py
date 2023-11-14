@@ -170,14 +170,20 @@ def read_image_regis(path):
     return origin_info, batch, norm_ratio
 
 
-def visualize(im1, im2, norm_ratio_1, norm_ratio_2, pt1, pt2, score, savename=None,
-              im1_isMRI=False, im2_isMRI=False):
-    q_window_low, q_window_high = -300, 300
-    k_window_low, k_window_high = -300, 300
+def visualize(im1, im2, norm_ratio_1, norm_ratio_2, pt1, pt2, score,
+              lung_window=False, save_folder='', savename=None, im1_isMRI=False, im2_isMRI=False):
+    print('visualizing ...')
+    if lung_window:
+        q_window_low, q_window_high = -1350, 150
+        k_window_low, k_window_high = -1350, 150
+    else:
+        q_window_low, q_window_high = -100, 200
+        k_window_low, k_window_high = -100, 200
     if im1_isMRI:
         q_window_low, q_window_high = im1.min(), im1.max()
     if im2_isMRI:
         k_window_low, k_window_high = im2.min(), im2.max()
+    markersize = 26
 
     fig, ax = plt.subplots(3, 2, figsize=(20, 30))
     q_img = im1.transpose(2, 0, 1)
@@ -192,14 +198,14 @@ def visualize(im1, im2, norm_ratio_1, norm_ratio_2, pt1, pt2, score, savename=No
     ax[0, 0].imshow(slice, cmap='gray')
     ax[0, 0].plot((pt1[0]), (pt1[1]), 'o', markerfacecolor='none',
                   markeredgecolor="red",
-                  markersize=12, markeredgewidth=2)
+                  markersize=markersize, markeredgewidth=2)
     slice = q_img[:, pt1[1], :]
     slice = slice[::-1, :]
     ax[1, 0].set_title('query')
     ax[1, 0].imshow(slice, cmap='gray', aspect=norm_ratio_1[2] / norm_ratio_1[0])
     ax[1, 0].plot((pt1[0]), (q_img.shape[0] - pt1[2] - 1), 'o',
                   markerfacecolor='none', markeredgecolor="red",
-                  markersize=12, markeredgewidth=2)
+                  markersize=markersize, markeredgewidth=2)
 
     slice = q_img[:, :, pt1[0]]
     slice = slice[::-1, :]
@@ -207,7 +213,7 @@ def visualize(im1, im2, norm_ratio_1, norm_ratio_2, pt1, pt2, score, savename=No
     ax[2, 0].imshow(slice, cmap='gray', aspect=norm_ratio_1[2] / norm_ratio_1[1])
     ax[2, 0].plot((pt1[1]), (q_img.shape[0] - pt1[2] - 1), 'o',
                   markerfacecolor='none', markeredgecolor="red",
-                  markersize=12, markeredgewidth=2)
+                  markersize=markersize, markeredgewidth=2)
     k_img = im2.transpose(2, 0, 1)
 
     k_img[k_img < k_window_low] = k_window_low
@@ -220,7 +226,7 @@ def visualize(im1, im2, norm_ratio_1, norm_ratio_2, pt1, pt2, score, savename=No
     ax[0, 1].imshow(slice, cmap='gray')
     ax[0, 1].plot((pt2[0]), (pt2[1]), 'o', markerfacecolor='none',
                   markeredgecolor="red",
-                  markersize=12, markeredgewidth=2)
+                  markersize=markersize, markeredgewidth=2)
 
     slice = k_img[:, pt2[1], :]
     slice = slice[::-1, :]
@@ -230,7 +236,7 @@ def visualize(im1, im2, norm_ratio_1, norm_ratio_2, pt1, pt2, score, savename=No
     ax[1, 1].plot((pt2[0]), (k_img.shape[0] - pt2[2] - 1), 'o',
                   markerfacecolor='none',
                   markeredgecolor="red",
-                  markersize=12, markeredgewidth=2)
+                  markersize=markersize, markeredgewidth=2)
     slice = k_img[:, :, pt2[0]]
     slice = slice[::-1, :]
     ax[2, 1].set_title('key')
@@ -238,12 +244,13 @@ def visualize(im1, im2, norm_ratio_1, norm_ratio_2, pt1, pt2, score, savename=No
     ax[2, 1].plot((pt2[1]), (k_img.shape[0] - pt2[2] - 1), 'o',
                   markerfacecolor='none',
                   markeredgecolor="red",
-                  markersize=12, markeredgewidth=2)
+                  markersize=markersize, markeredgewidth=2)
     plt.suptitle(f'score:{score}')
     plt.tight_layout()
     if not savename is None:
-        plt.savefig(
-            f'/data/sdd/user/visual/visual-matching/{pt1[0]}_{pt1[1]}_{pt1[2]}_{pt2[0]}_{pt2[1]}_{pt2[2]}_{savename}.png')
+        os.makedirs(save_folder, exist_ok=True)
+        plt.savefig(os.path.join(save_folder,
+            f'{savename}_{pt1[0]}_{pt1[1]}_{pt1[2]}_{pt2[0]}_{pt2[1]}_{pt2[2]}.png'))
         plt.close()
     else:
         plt.show()

@@ -593,9 +593,10 @@ class Sam(BaseDetector):
         """Test without augmentation."""
         x = self.extract_feat(img)
         outs = []
-        out1 = x[0].data.cpu().numpy()
-        out2 = x[1].data.cpu().numpy()
-        outs = [out1, out2, img.data.cpu().numpy(), img_metas[0]['filename'].split('.', 1)[0]]
+        out1 = x[0]#.data.cpu().numpy()
+        out2 = x[1]#.data.cpu().numpy()
+        outs = [out1, out2, img,#.data.cpu().numpy(),
+                img_metas[0]['filename'].split('.', 1)[0]]
         output_embedding = self.test_cfg.get('output_embedding', True)
         if not output_embedding:
             if not os.path.exists(self.test_cfg.save_path):
