@@ -46,8 +46,8 @@ def main():
     visualize(im1['img'], im2['img'], norm_info_1, norm_info_2, pt1, pt2, score)
 
 
-def fixed_point_iterations(emb1, norm_info_1, emb2, norm_info_2, im2_shape, pt1, x_margin=1, y_margin=1, z_margin=1,
-                           iterations=6):
+def fixed_point_iterations(emb1, norm_info_1, emb2, norm_info_2, im2_shape, pt1, x_margin=2, y_margin=2, z_margin=2,
+                           iterations=4):
     print('performing fixed point iteration')
     pt_query = np.round(pt1).astype('int')
     pt_query_center = np.floor(pt_query * norm_info_1 * 0.5).astype(int)
@@ -78,7 +78,7 @@ def fixed_point_iterations(emb1, norm_info_1, emb2, norm_info_2, im2_shape, pt1,
     final_k_all = []
     final_score_all = []
     for i in range(dis.shape[0]):
-        if dis[i] < 100 and pt_final_score[i] > 1.3/3:
+        if dis[i] < 100 and pt_final_score[i] > .8:
             final_q_all.append(pt_q_final[i, :])
             final_k_all.append(pt_k_final[i, :])
             final_score_all.append(pt_final_score[i])
