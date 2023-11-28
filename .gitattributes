@@ -1,3 +1,0 @@
-checkpoints/CrossSAM_iter_20000_ct_mr_inter_0.pth filter=lfs diff=lfs merge=lfs -text
-checkpoints/SAM.pth filter=lfs diff=lfs merge=lfs -text
-checkpoints/SAMv2_iter_20000.pth filter=lfs diff=lfs merge=lfs -text

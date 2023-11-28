@@ -52,15 +52,15 @@ def get_sim_embed_loc(query_img_info, key_img_info, query_point, imshape, norm_i
     query_point = np.array(query_point)
     cuda_device = torch.device('cuda:' + str(0))
     query_point_fine_re = np.floor(query_point / 2.).astype(int)
-    fine_query = torch.tensor(query_img_info[0]).to(cuda_device)
+    fine_query = query_img_info[0]
 
-    coarse_query = torch.tensor(query_img_info[1]).to(cuda_device)
+    coarse_query = query_img_info[1]
 
     coarse_query = F.interpolate(coarse_query, fine_query.shape[2:], mode='trilinear', align_corners=False)
     coarse_query = F.normalize(coarse_query, dim=1)
 
-    fine_key = torch.tensor(key_img_info[0]).to(cuda_device)
-    coarse_key = torch.tensor(key_img_info[1]).to(cuda_device)
+    fine_key = key_img_info[0]
+    coarse_key = key_img_info[1]
     coarse_key = F.interpolate(coarse_key, fine_key.shape[2:], mode='trilinear', align_corners=False)
     coarse_key = F.normalize(coarse_key, dim=1)
 
@@ -90,9 +90,9 @@ def get_sim_embed_loc(query_img_info, key_img_info, query_point, imshape, norm_i
         return sim
     sim = sim[0, 0, :, :, :]
     ind = torch.where(sim == sim.max())
-    z = ind[0][0].data.cpu().numpy()
-    y = ind[1][0].data.cpu().numpy()
-    x = ind[2][0].data.cpu().numpy()
+    z = int(ind[0][0].data.cpu().numpy())
+    y = int(ind[1][0].data.cpu().numpy())
+    x = int(ind[2][0].data.cpu().numpy())
     if write_sim:
         img = torch.tensor(key_img_info[2]).to(cuda_device)
         img = F.interpolate(img, imshape, mode='trilinear', align_corners=False)
@@ -115,15 +115,15 @@ def get_sim_embed_loc(query_img_info, key_img_info, query_point, imshape, norm_i
 def get_sim_embed_loc_multi_embedding_space(query_img_info, key_img_info, query_points):
     query_point = np.array(query_points)
     cuda_device = torch.device('cuda:' + str(0))
-    fine_query = torch.tensor(query_img_info[0]).to(cuda_device)
+    fine_query = query_img_info[0]
 
-    coarse_query = torch.tensor(query_img_info[1]).to(cuda_device)
+    coarse_query = query_img_info[1]
 
     coarse_query = F.interpolate(coarse_query, fine_query.shape[2:], mode='trilinear', align_corners=False)
     coarse_query = F.normalize(coarse_query, dim=1)
 
-    fine_key = torch.tensor(key_img_info[0]).to(cuda_device)
-    coarse_key = torch.tensor(key_img_info[1]).to(cuda_device)
+    fine_key = key_img_info[0]
+    coarse_key = key_img_info[1]
     coarse_key = F.interpolate(coarse_key, fine_key.shape[2:], mode='trilinear', align_corners=False)
     coarse_key = F.normalize(coarse_key, dim=1)
 
@@ -163,17 +163,17 @@ def get_sim_embed_semantic_loc(query_img_info, key_img_info, query_point, imshap
     query_point = np.array(query_point)
     cuda_device = torch.device('cuda:' + str(0))
     query_point_fine_re = np.floor(query_point / 2.).astype(int)
-    fine_query = torch.tensor(query_img_info[0]).to(cuda_device)
-    seman_query = torch.tensor(query_img_info[2]).to(cuda_device)
+    fine_query = query_img_info[0]
+    seman_query = query_img_info[2]
 
-    coarse_query = torch.tensor(query_img_info[1]).to(cuda_device)
+    coarse_query = query_img_info[1]
 
     coarse_query = F.interpolate(coarse_query, fine_query.shape[2:], mode='trilinear', align_corners=False)
     coarse_query = F.normalize(coarse_query, dim=1)
 
-    fine_key = torch.tensor(key_img_info[0]).to(cuda_device)
-    coarse_key = torch.tensor(key_img_info[1]).to(cuda_device)
-    seman_key = torch.tensor(key_img_info[2]).to(cuda_device)
+    fine_key = key_img_info[0]
+    coarse_key = key_img_info[1]
+    seman_key = key_img_info[2]
     coarse_key = F.interpolate(coarse_key, fine_key.shape[2:], mode='trilinear', align_corners=False)
     coarse_key = F.normalize(coarse_key, dim=1)
 
@@ -210,9 +210,9 @@ def get_sim_embed_semantic_loc(query_img_info, key_img_info, query_point, imshap
         return sim
     sim = sim[0, 0, :, :, :]
     ind = torch.where(sim == sim.max())
-    z = ind[0][0].data.cpu().numpy()
-    y = ind[1][0].data.cpu().numpy()
-    x = ind[2][0].data.cpu().numpy()
+    z = int(ind[0][0].data.cpu().numpy())
+    y = int(ind[1][0].data.cpu().numpy())
+    x = int(ind[2][0].data.cpu().numpy())
     if write_sim:
         img = torch.tensor(key_img_info[3]).to(cuda_device)
         img = F.interpolate(img, imshape, mode='trilinear', align_corners=False)
@@ -235,17 +235,17 @@ def get_sim_embed_semantic_loc(query_img_info, key_img_info, query_point, imshap
 def get_sim_semantic_embed_loc_multi_embedding_space(query_img_info, key_img_info, query_points, cuda_device,
                                                      return_interploted=False):
     # cuda_device = torch.device('cuda:' + str(0))
-    fine_query = torch.tensor(query_img_info[0]).to(cuda_device)
+    fine_query = query_img_info[0]
 
-    coarse_query = torch.tensor(query_img_info[1]).to(cuda_device)
-    sem_query = torch.tensor(query_img_info[2]).to(cuda_device)
+    coarse_query = query_img_info[1]
+    sem_query = query_img_info[2]
 
     coarse_query = F.interpolate(coarse_query, fine_query.shape[2:], mode='trilinear', align_corners=False)
     coarse_query = F.normalize(coarse_query, dim=1)
 
-    fine_key = torch.tensor(key_img_info[0]).to(cuda_device)
-    coarse_key = torch.tensor(key_img_info[1]).to(cuda_device)
-    sem_key = torch.tensor(key_img_info[2]).to(cuda_device)
+    fine_key = key_img_info[0]
+    coarse_key = key_img_info[1]
+    sem_key = key_img_info[2]
     coarse_key = F.interpolate(coarse_key, fine_key.shape[2:], mode='trilinear', align_corners=False)
     coarse_key = F.normalize(coarse_key, dim=1)
 
@@ -311,14 +311,14 @@ def get_sim_semantic_embed_loc_multi_embedding_space(query_img_info, key_img_inf
 
 def get_sim_embed_loc_multi_embedding_space(query_img_info, key_img_info, query_points, cuda_device,
                                             return_interploted=False):
-    fine_query = torch.tensor(query_img_info[0]).to(cuda_device)
-    coarse_query = torch.tensor(query_img_info[1]).to(cuda_device)
+    fine_query = query_img_info[0]
+    coarse_query = query_img_info[1]
 
     coarse_query = F.interpolate(coarse_query, fine_query.shape[2:], mode='trilinear', align_corners=False)
     coarse_query = F.normalize(coarse_query, dim=1)
 
-    fine_key = torch.tensor(key_img_info[0]).to(cuda_device)
-    coarse_key = torch.tensor(key_img_info[1]).to(cuda_device)
+    fine_key = key_img_info[0]
+    coarse_key = key_img_info[1]
     coarse_key = F.interpolate(coarse_key, fine_key.shape[2:], mode='trilinear', align_corners=False)
     coarse_key = F.normalize(coarse_key, dim=1)
 

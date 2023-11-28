@@ -4,6 +4,7 @@ third_party
 third_party/
 tools/work_dirs/
 tools/work_dirs
+data/processed_data/
 __pycache__/
 */__pycache__
 *.egg-info

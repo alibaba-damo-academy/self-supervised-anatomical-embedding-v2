@@ -638,11 +638,12 @@ class Sam_uniform_cross_volume_dual_head_mean_vector(BaseDetector):
     def simple_test(self, img, img_metas, proposals=None, rescale=False):
         """Test without augmentation."""
         x = self.extract_feat(img)
-        outs = []
-        out1 = x[0].data.cpu().numpy()
-        out2 = x[1].data.cpu().numpy()
-        out3 = x[2].data.cpu().numpy()
-        outs = [out1, out2, out3, img.data.cpu().numpy(), img_metas[0]['filename'].split('.', 1)[0]]
+        # outs = []
+        out1 = x[0]#.data.cpu().numpy()
+        out2 = x[1]#.data.cpu().numpy()
+        out3 = x[2]#.data.cpu().numpy()
+        outs = [out1, out2, out3, img.data,#.cpu().numpy(),
+                img_metas[0]['filename'].split('.', 1)[0]]
         output_embedding = self.test_cfg.get('output_embedding', True)
         if not output_embedding:
             if not os.path.exists(self.test_cfg.save_path):
