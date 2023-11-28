@@ -10,3 +10,4 @@ __pycache__/
 *.egg-info
 *.pyc
 sam/datasets/piplines/__pycache__/*
+*/demo_multiim_semantic_stable_points.py
