@@ -10,7 +10,7 @@ Network and loss:
 
 ![](./SAM_framework2.png)
 
-### SAM++
+### UAE-S
 
 See [arXiv](https://arxiv.org/abs/2306.13988). Semantic head:
 
@@ -20,9 +20,9 @@ Structural inference (fixed-point iteration):
 
 ![](./framework-b-SAMpp.png)
 
-### Cross-SAM
+### UAE-M
 
-Cross-SAM is a generalized SAM framework for cross-modality embedding learning, see [arXiv](https://arxiv.org/abs/2307.03535).
+See [arXiv](https://arxiv.org/abs/2307.03535).
 
 Flowchart:
 
@@ -32,13 +32,13 @@ MRI to CT point matching results:
 
 ![](./examples.png)
 
-Cross-SAM can be used for cross-modality registration, even if the two modalities have large FOV difference, see the 
+UAE-M can be used for cross-modality registration, even if the two modalities have large FOV difference, see the 
 following examples with large CT images and small MR ones. 
 
-We first use Aggressive-SAM/Cross-SAM to find grid matching points
+We first use aggressive data augmentation to train UAE-M0 to find grid matching points
 on the CT-MRI data, and then do rigid registration, followed by DEEDS deformable fine-tuning.
 
-The Aggressive-SAM is trained using only intra-modality data and would result some false alignment but the overall body part is correct.
-Cross-SAM is trained on top of the registration results of the Aggressive-SAM. 
+The UAE-M0 is trained using only intra-modality data and would result some false alignment but the overall body part is correct.
+UAE-M is trained on top of the registration results of the UAE-M0. 
 
 ![](./regis_result.png)

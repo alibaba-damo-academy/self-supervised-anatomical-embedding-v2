@@ -1,12 +1,10 @@
-# SAM, SAM++ and Cross-SAM
-**SAM** stands for "Self-supervised Anatomical eMbeddings", which is different from Meta's "Segment Anything Model". 
+# SAM (Self-supervised Anatomical eMbedding) and UAE (Universal Anatomical Embedding)
 Please find our papers:
-1. Xiaoyu Bai, Fan Bai, Xiaofei Huo, Jia Ge, Jingjing Lu, Xianghua Ye, Ke Yan, Yong Xia, "SAMv2: A Unified Framework
-for Learning Appearance, Semantic and Cross-Modality Anatomical Embeddings". 2023 ([arXiv](https://arxiv.org/pdf/2311.15111.pdf))
+1. Xiaoyu Bai, Fan Bai, Xiaofei Huo, Jia Ge, Jingjing Lu, Xianghua Ye, Ke Yan, Yong Xia, "UAE: Universal Anatomical 
+Embedding on Multi-modality Medical Images". 2023 ([arXiv](https://arxiv.org/pdf/2311.15111.pdf))
 2. Ke Yan, Jinzheng Cai, Dakai Jin, Shun Miao, Dazhou Guo, Adam P. Harrison, Youbao Tang, 
 Jing Xiao, Jingjing Lu, Le Lu, "SAM: Self-supervised Learning of Pixel-wise Anatomical Embeddings in Radiological 
 Images". IEEE Trans. on Medical Imaging, 2022 ([arXiv](https://arxiv.org/abs/2012.02383))
-
 
 SAM can be used to match arbitrary anatomical landmarks between two radiological images (e.g. CT, MR, X-ray, etc.) You
 can pick one point in any anatomy from one image, and then use SAM to detect it in all other images. Its applications
@@ -30,15 +28,16 @@ SAM has several advantages:
 * Robust to common image variations, such as inter-subject variability, organ deformation, contrast injection,
 different field-of-views, moderate pathological changes, image noise, and even modality change.
 
-The original SAM was proposed by Ke Yan. We re-implemented SAM and proposed SAM++ and  Cross-SAM, including
-the following improvements:
+The original SAM was proposed by Ke Yan. We improved SAM and proposed Universal Anatomical Embedding (UAE), including 
+UAE-S and UAE-M, which are designed for single- and multi-modality embedding learning:
 * Using organ mask supervision to enhance the semantic information of SAM embeddings, allowing it to match better in hard 
 organs;
 * Inventing a structural inference technique to refine the matched coordinates;
 * Leveraging aggressive contrast augmentation and a novel iterative training process to enable cross-modality matching (e.g. CT and
 multi-modal MR).
 
-This repo is written by **Xiaoyu Bai** (bai.aa1234241@gmail.com), Medical AI Lab, Alibaba DAMO Academy.
+This repo contains both the original SAM reimplementation and UAE. It is written by **Xiaoyu Bai** (bai.aa1234241@gmail.com), 
+Medical AI Lab, Alibaba DAMO Academy.
 
 ## Algorithm framework and more examples
 See [this page](./resources/algorithm_frameworks.md).
@@ -73,11 +72,11 @@ Finally, put the downloaded directories `checkpoints` and `data` to the project 
 ### Pretrained models
 There are three models:
 * `SAM.pth`: Original SAM model trained on the NIH Lymphnode dataset. It covers the chest-abdomen-pelvis region in CT.
-* `SAMv2_iter_20000.pth`: SAM++ model trained on the NIH Lymphnode and the TotalSegmentator dataset. It covers the 
+* `SAMv2_iter_20000.pth`: UAE-S model trained on the NIH Lymphnode and the TotalSegmentator dataset. It covers the 
 head-neck-chest-abdomen-pelvis region in CT.
-* `CrossSAM_iter_20000_ct_mr_inter_1.pth` Cross-SAM model trained on the NIH Lymphnode and an Abdomen CT-MRI dataset.
+* `CrossSAM_iter_20000_ct_mr_inter_1.pth` UAE-M model trained on the NIH Lymphnode and an Abdomen CT-MRI dataset.
 It covers the upper abdomen region in CT and T2 MRI. Surprisingly, it can also be used in other MRI modalities such as 
-T1, showing good our-of-domain generalization ability.
+T1, showing good out-of-domain generalization ability.
 
 ### Demo
 
@@ -88,13 +87,13 @@ We have prepared a few example images in `data` folder. You can try the pretrain
 # assume all input image are in torchio "LPS+" direction which equals to "RAI" orientation in ITK-Snap.
 tools/demo.py
 ```
-- For SAM++, use:
+- For UAE-S, use:
 ```
-tools/demo_semantic.py # for SAM++ model with semantic branch and with naive single-point nearest neighbour (NN) matching
+tools/demo_semantic.py # for UAE-S model with semantic branch and with naive single-point nearest neighbour (NN) matching
 or
-tools/demo_semantic_stable_points.py # for SAM++ with fixed-points based structural inference, slower but more accurate
+tools/demo_semantic_stable_points.py # for UAE-S with fixed-points based structural inference, slower but more accurate
 ```
-- For Cross-SAM, use:
+- For UAE-M, use:
 ```
 tools/demo_ct_mr.py  # for inter-modality matching between abdominal CT and MR
 ```

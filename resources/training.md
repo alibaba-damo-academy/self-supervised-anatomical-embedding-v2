@@ -15,7 +15,7 @@ python misc/lymphnode_preprocess_crop_multi_process.py
 ```
 
 
-### inter-volume supervised-contrastive training dataset (SAM++)
+### inter-volume supervised-contrastive training dataset (UAE-S)
 - Take TotalSegmentator dataset as an example:
 - Execute the following command to generate resampled data:
 ```
@@ -24,7 +24,7 @@ python misc/lymphnode_preprocess_crop_multi_process.py
 python misc/merge_mask_label_multi_process.py
 ```
 
-### inter-volume cross-modality training dataset (Cross-SAM)
+### inter-volume cross-modality training dataset (UAE-M)
 - This assume for a single patient, you have, for instance, both T1 MRI and CT images.
 - Both unregistered (may have large FOV difference) pair and registered pair use the same process code.
 ```
@@ -49,7 +49,7 @@ python tools/train_sam.sh configs/sam/sam_deeplesion.py  --auto-resume --no-vali
 ```
 for single gpu training.
 
-### SAM++
+### UAE-S
 
 See [arXiv](https://arxiv.org/abs/2306.13988).
 
@@ -57,7 +57,7 @@ See [arXiv](https://arxiv.org/abs/2306.13988).
 bash tools/dist_train.sh configs/samv2/samv2_NIHLN.py $NUM_GPUS$
 ```
 
-### Cross-SAM
+### UAE-M
 
 See [arXiv](https://arxiv.org/abs/2307.03535).
 
@@ -98,7 +98,7 @@ bash tools/dist_train.sh configs/samv2/samv2_ct_mri_inter.py $NUM_GPUS$
 - If you want to save the embeddings of all the volume from a dataset (i.e. the DeepLesion dataset) and use them later,
 you can use `test_sam.py` or `dist_test.sh`.
 ```
-# assume you want to save the SAM++ embeddings, first find 
+# assume you want to save the UAE-S embeddings, first find 
 #.configs/samv2/samv2_NIHLN.py
 #set the correct path contain the test dataset for the data config section.
 #data = dict(
